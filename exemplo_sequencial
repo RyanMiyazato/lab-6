@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
+class ComputacaoSequencial
+{
+    static void Main()
+    {
+        List<int> lote = new List<int>();
+        for (int i = 0; i < 1000000; i++) // Lote de 1 milhão de números
+            lote.Add(i);
+
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        foreach (var numero in lote)
+        {
+            var resultado = Calcular(numero);
+        }
+
+        stopwatch.Stop();
+        Console.WriteLine($"Tempo de execução sequencial: {stopwatch.ElapsedMilliseconds} ms");
+    }
+
+    static int Calcular(int numero)
+    {
+        return numero * 10; // Exemplo de cálculo simples
+    }
+}
