@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Diagnostics;
+
+class ComputacaoComThreads
+{
+    static void Main()
+    {
+        List<int> lote = new List<int>();
+        for (int i = 0; i < 1000000; i++) // Lote de 1 milhão de números
+            lote.Add(i);
+
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        int numeroThreads = 4; // Definindo 4 threads para dividir o lote
+        int tamanhoLote = lote.Count / numeroThreads;
+        List<Thread> threads = new List<Thread>();
+
+        for (int i = 0; i < numeroThreads; i++)
+        {
+            int inicio = i * tamanhoLote;
+            int fim = (i + 1) * tamanhoLote;
+            Thread t = new Thread(() => ProcessarLote(lote.GetRange(inicio, fim - inicio)));
+            threads.Add(t);
+            t.Start();
+        }
+
+        foreach (var thread in threads)
+        {
+            thread.Join();
+        }
+
+        stopwatch.Stop();
+        Console.WriteLine($"Tempo de execução com threads: {stopwatch.ElapsedMilliseconds} ms");
+    }
+
+    static void ProcessarLote(List<int> lote)
+    {
+        foreach (var numero in lote)
+        {
+            var resultado = Calcular(numero);
+        }
+    }
+
+    static int Calcular(int numero)
+    {
+        return numero * 10; // Exemplo de cálculo simples
+    }
+}
